@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\lyonste\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="C:\Users\lyonste\AndroidStudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-design-23.2.1_f98eb5846d12ea899ee24c9516c4aa83eb9b797c.jar" />
+    </item>
+    <item
+        jar="C:\Users\lyonste\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="C:\Users\lyonste\AndroidStudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-23.2.1_29acd51803a044852cdbd4aaf470d7a87cfd0c75.jar" />
+    </item>
+
+</items>
