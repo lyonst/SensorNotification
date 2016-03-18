@@ -26,7 +26,7 @@
                 android:layout_width="100px"
                 android:layout_height="100px"
                 />
-            <TextView  android:text="test"
+            <TextView  android:text=""
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:textSize="50dp"
@@ -37,7 +37,7 @@
                 android:layout_gravity="left"
                 android:layout_width="100px"
                 android:layout_height="100px"/>
-            <TextView android:text="test"
+            <TextView android:text=""
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_height="match_parent"

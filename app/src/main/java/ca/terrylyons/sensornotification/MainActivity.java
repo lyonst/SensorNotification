@@ -1,8 +1,11 @@
 package ca.terrylyons.sensornotification;
 
+import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,11 +15,27 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+    }
 
-        // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings)
+        {
+            Intent intent = new Intent();
+            intent.setClass(this, Settings.class);
+            startActivityForResult(intent, 0);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
