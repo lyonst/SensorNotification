@@ -7,6 +7,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
 
         setContentView(R.layout.activity_main);
     }
@@ -37,5 +45,49 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private int[] getCurrentValues()
+    {
+        FileInputStream file = null;
+        BufferedReader reader = null;
+
+        int[] statuses = new int[2];
+        statuses[0] = 0;
+        statuses[1] = 0;
+
+        try {
+            file = getApplicationContext().openFileInput("sensor.txt");
+            reader = new BufferedReader(new InputStreamReader(file));
+
+            String data = reader.readLine();
+            String[] values = data.split(",");
+
+
+            if (values.length > 3)
+            {
+                statuses[0] = Integer.parseInt(values[0]);
+                statuses[1] = Integer.parseInt(values[2]);
+            }
+        }
+        catch (IOException ex)
+        {
+        }
+        finally {
+            try
+            {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (file != null) {
+                    file.close();
+                }
+            }
+            catch(IOException ex)
+            {
+            }
+        }
+
+        return statuses;
     }
 }
