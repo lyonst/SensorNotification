@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         setStatus(washerStatus, statuses[0]);
         setStatus(dryerStatus, statuses[1]);
-
-
     }
 
     @Override
