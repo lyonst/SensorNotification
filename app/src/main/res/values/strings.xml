@@ -64,4 +64,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
     <string name="action_settings">Settings</string>
+    <string name="notRunning">Not running</string>
+    <string name="running">Running</string>
+    <string name="done">Done</string>
+    <string name="washer">washer</string>
+    <string name="dryer">dryer</string>
 </resources>

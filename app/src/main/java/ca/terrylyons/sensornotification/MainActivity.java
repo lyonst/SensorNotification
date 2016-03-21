@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -21,9 +23,17 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-
-
         setContentView(R.layout.activity_main);
+
+        int [] statuses = getCurrentValues();
+
+        TextView washerStatus = (TextView)findViewById(R.id.washerStatus);
+        TextView dryerStatus = (TextView)findViewById(R.id.dryerStatus);
+
+        setStatus(washerStatus, statuses[0]);
+        setStatus(dryerStatus, statuses[1]);
+
+
     }
 
     @Override
@@ -89,5 +99,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return statuses;
+    }
+
+    private void setStatus(TextView view, int status)
+    {
+        switch (status)
+        {
+            case 0:
+                view.setText(R.string.notRunning);
+                break;
+            case 1:
+                view.setText(R.string.running);
+                break;
+            case 2:
+                view.setText(R.string.done);
+                break;
+        }
     }
 }
