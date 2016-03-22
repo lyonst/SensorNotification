@@ -25,9 +25,10 @@ public class SensorService extends Service {
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String url = settings.getString("server_url", "http://localhost");
-        int frequency = settings.getInt("sync_frequency", 30);
+        int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
 
-
+        WebClient client = new WebClient(url, frequency);
+        client.GetStatus(0);
 
         return START_STICKY;
     }
