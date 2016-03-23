@@ -17,8 +17,8 @@ import org.json.*;
  * Created by Terry2 on 21/03/2016.
  */
 public class WebClient {
-    private int _frequency;
     private String _url;
+    private JSONObject _status;
 
     public WebClient(String url)
     {
@@ -26,11 +26,17 @@ public class WebClient {
     }
 
     public void GetStatus(int id) {
-
+        WebServiceCall webServiceCall = new WebServiceCall();
+        webServiceCall.execute(id);
     }
 
     private class WebServiceCall extends AsyncTask<Integer, Void, JSONObject>
     {
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            _status = jsonObject;
+        }
+
         @Override
         protected JSONObject doInBackground(Integer... params) {
             URL url;
