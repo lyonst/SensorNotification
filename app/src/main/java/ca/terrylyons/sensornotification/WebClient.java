@@ -1,5 +1,7 @@
 package ca.terrylyons.sensornotification;
 
+import android.os.AsyncTask;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Objects;
+
 import org.json.*;
 
 /**
@@ -16,58 +20,64 @@ public class WebClient {
     private int _frequency;
     private String _url;
 
-    public WebClient(String url, int frequency)
+    public WebClient(String url)
     {
         _url = url;
-        _frequency = frequency;
     }
 
     public void GetStatus(int id) {
-        URL url;
-        HttpURLConnection conn;
 
-        try {
-            if (!_url.endsWith("/")) {
-                _url += "/";
+    }
+
+    private class WebServiceCall extends AsyncTask<Integer, Void, JSONObject>
+    {
+        @Override
+        protected JSONObject doInBackground(Integer... params) {
+            URL url;
+            HttpURLConnection conn;
+
+            try {
+                if (!_url.endsWith("/")) {
+                    _url += "/";
+                }
+
+                url = new URL(_url + "sensors/laundry/" + params[0]);
+                conn = (HttpURLConnection) url.openConnection();
+            } catch (MalformedURLException ex) {
+                return null;
+            } catch (IOException ex) {
+                return null;
             }
 
-            url = new URL(_url + "sensors/laundry/" + id);
-            conn = (HttpURLConnection) url.openConnection();
-        } catch (MalformedURLException ex) {
-            return;
-        } catch (IOException ex) {
-            return;
-        }
+            try {
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept", "application/json");
 
-        try {
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("Failed : HTTP error code : "
+                            + conn.getResponseCode());
+                }
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
+                BufferedReader br = new BufferedReader(new InputStreamReader(
+                        (conn.getInputStream())));
+
+                String response = br.readLine();
+
+                JSONObject obj = new JSONObject(response);
+
+                return obj;
+            } catch (ProtocolException ex) {
+                return null;
+            } catch (JSONException ex) {
+                return null;
+            } catch (IOException ex) {
+                int i = 0;
+                int j = 0;
+                j = i + 1;
+                return null;
+            } finally {
+                conn.disconnect();
             }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            String response = br.readLine();
-
-            JSONObject obj = new JSONObject(response);
-
-            conn.disconnect();
-        } catch (ProtocolException ex) {
-
-        } catch (JSONException ex) {
-
-        } catch (IOException ex) {
-            int i = 0;
-            int j = 0;
-            j = i + 1;
         }
-        finally {
-            conn.disconnect();
-        }
-
     }
 }
