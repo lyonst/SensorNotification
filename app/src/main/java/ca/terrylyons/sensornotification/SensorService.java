@@ -27,7 +27,7 @@ public class SensorService extends Service {
         String url = settings.getString("server_url", "http://localhost");
         int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
 
-        WebClient client = new WebClient(url, frequency);
+        WebClient client = new WebClient(url);
         client.GetStatus(0);
 
         return START_STICKY;

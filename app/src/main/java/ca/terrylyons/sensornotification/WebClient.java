@@ -9,6 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.Timestamp;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import org.json.*;
@@ -18,23 +22,31 @@ import org.json.*;
  */
 public class WebClient {
     private String _url;
-    private JSONObject _status;
+    private SensorStatus _status;
 
     public WebClient(String url)
     {
         _url = url;
     }
 
-    public void GetStatus(int id) {
+    public SensorStatus GetStatus(int id) {
         WebServiceCall webServiceCall = new WebServiceCall();
         webServiceCall.execute(id);
+        _status.Id = id;
+        return _status;
     }
 
     private class WebServiceCall extends AsyncTask<Integer, Void, JSONObject>
     {
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            _status = jsonObject;
+            try {
+                _status = new SensorStatus();
+                _status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
+                _status.TimeStamp = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss").parse(jsonObject.getString("Timestamp"));
+            } catch (JSONException ex) {
+            } catch (ParseException ex){
+            }
         }
 
         @Override
