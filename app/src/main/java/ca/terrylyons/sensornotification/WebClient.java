@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -31,6 +30,11 @@ public class WebClient {
     }
 
     public SensorStatus GetStatus(int id) {
+        if (_url == "")
+        {
+            return _status;
+        }
+
         WebServiceCall webServiceCall = new WebServiceCall();
         webServiceCall.execute(id);
         return _status;
@@ -44,11 +48,10 @@ public class WebClient {
                 _status = new SensorStatus();
                 _status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
                 String timeStamp = jsonObject.getString("TimeStamp").replace('T', ' ');
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                _status.TimeStamp = format.parse(timeStamp);
+                _status.TimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStamp);
 
                 CheckStatus checkStatus = new CheckStatus();
-                boolean changed = checkStatus.HasStatusChanged(_context, _status);
+                checkStatus.hasStatusChanged(_context, _status);
             } catch (JSONException ex) {
             } catch (ParseException ex){
             }

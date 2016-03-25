@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SensorNotification</string>
+    <string name="app_name">Sensor Notification</string>
 
     <!-- Strings related to Settings -->
 
@@ -69,4 +69,6 @@
     <string name="done">Done</string>
     <string name="washer">washer</string>
     <string name="dryer">dryer</string>
+    <string name="sensorNotification">Sensor Notification</string>
+    <string name="reset">Reset</string>
 </resources>

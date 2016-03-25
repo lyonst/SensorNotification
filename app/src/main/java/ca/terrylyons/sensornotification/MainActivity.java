@@ -34,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setStatus(washerStatus, statuses[0]);
         setStatus(dryerStatus, statuses[1]);
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = settings.getString("server_url", "http://localhost");
-        int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
-
-        //WebClient client = new WebClient(this, url);
-        //SensorStatus status = client.GetStatus(0);
         Intent service = new Intent(this, SensorService.class);
         this.startService(service);
     }

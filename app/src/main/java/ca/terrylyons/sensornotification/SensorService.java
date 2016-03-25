@@ -49,11 +49,12 @@ public class SensorService extends Service {
         @Override
         public void run() {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String url = settings.getString("server_url", "http://localhost");
+            String url = settings.getString("server_url", "");
             int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
 
             WebClient client = new WebClient(getApplicationContext(), url);
             client.GetStatus(0);
+            client.GetStatus(1);
 
             _handler.postDelayed(runnableCode, frequency * 60000);
         }
