@@ -47,7 +47,6 @@ public class WebClient {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 _status.TimeStamp = format.parse(timeStamp);
 
-
                 CheckStatus checkStatus = new CheckStatus();
                 boolean changed = checkStatus.HasStatusChanged(_context, _status);
             } catch (JSONException ex) {

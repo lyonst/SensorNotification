@@ -5,11 +5,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.preference.PreferenceManager;
 
 public class SensorService extends Service {
+    private Handler _handler;
+
     public SensorService() {
     }
 
@@ -23,13 +26,8 @@ public class SensorService extends Service {
         NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(1, builder.build());
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = settings.getString("server_url", "http://localhost");
-        int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
-
-        WebClient client = new WebClient(this, url);
-        client.GetStatus(0);
-
+        _handler = new Handler();
+        _handler.post(runnableCode);
         return START_STICKY;
     }
 
@@ -37,4 +35,27 @@ public class SensorService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (_handler != null) {
+            _handler.removeCallbacks(runnableCode);
+        }
+    }
+
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String url = settings.getString("server_url", "http://localhost");
+            int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
+
+            WebClient client = new WebClient(getApplicationContext(), url);
+            client.GetStatus(0);
+
+            _handler.postDelayed(runnableCode, frequency * 60000);
+        }
+    };
 }
