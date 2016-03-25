@@ -1,5 +1,6 @@
 package ca.terrylyons.sensornotification;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -9,11 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.security.Timestamp;
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 
 import org.json.*;
 
@@ -23,16 +22,17 @@ import org.json.*;
 public class WebClient {
     private String _url;
     private SensorStatus _status;
+    private Context _context;
 
-    public WebClient(String url)
+    public WebClient(Context context, String url)
     {
         _url = url;
+        _context = context;
     }
 
     public SensorStatus GetStatus(int id) {
         WebServiceCall webServiceCall = new WebServiceCall();
         webServiceCall.execute(id);
-        _status.Id = id;
         return _status;
     }
 
@@ -43,10 +43,18 @@ public class WebClient {
             try {
                 _status = new SensorStatus();
                 _status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
-                _status.TimeStamp = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss").parse(jsonObject.getString("Timestamp"));
+                String timeStamp = jsonObject.getString("TimeStamp").replace('T', ' ');
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                _status.TimeStamp = format.parse(timeStamp);
+
+
+                CheckStatus checkStatus = new CheckStatus();
+                boolean changed = checkStatus.HasStatusChanged(_context, _status);
             } catch (JSONException ex) {
             } catch (ParseException ex){
             }
+
+
         }
 
         @Override
