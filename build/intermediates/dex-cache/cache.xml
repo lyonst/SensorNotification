@@ -1,3 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\internal_impl-23.2.1_172831887afe5b5200d689b95f12d661e7dd1475.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.2.1_d240938915710a75f328e4262d949d2575aa0920.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.2.1_28da00148495db30bb7e8fecf89f8f923bfe2a83.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-design-23.2.1_df5b10789e79a30a73caa8f8c129f68d14a963b4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.2.1_45920e1df2b22f765720023736f85e7ad6bcfad5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-23.2.1_3affad978c1c4b926fadb3692805942fee053ac4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.2.1_cf000c8216ec2ff494979821f1f9c6cfe2d24c91.jar" />
+    </item>
+    <item
+        jar="C:\Users\Terry2\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="C:\Users\Terry2\StudioProjects\SensorNotification\app\build\intermediates\pre-dexed\debug\support-annotations-23.2.1_65459af1d32122a3443a296cecf51041b36a2603.jar" />
+    </item>
+
+</items>

@@ -17,21 +17,19 @@ import java.util.Date;
 public class CheckStatus {
     public boolean HasStatusChanged(Context context, SensorStatus status)
     {
-        SensorStatus currentStatus = getCurrentValues(context, status.Id);
+        SensorStatus previousStatus = getCurrentValues(context, status.Id);
         boolean changed = false;
 
-        if (currentStatus.State != status.State) {
+        if (previousStatus.State != status.State) {
             changed = true;
 
-            if (currentStatus.State == 1)
+            if (previousStatus.State == 1)
             {
                 status.State = 3;
             }
         }
-        else
-        {
-            if (currentStatus.State == 0 && currentStatus.TimeStamp != status.TimeStamp)
-            {
+        else {
+            if (previousStatus.State == 0 && previousStatus.TimeStamp.before(status.TimeStamp)) {
                 status.State = 3;
                 changed = true;
             }
