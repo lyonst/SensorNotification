@@ -1,6 +1,8 @@
 package ca.terrylyons.sensornotification;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -20,7 +22,6 @@ import org.json.*;
  */
 public class WebClient {
     private String _url;
-    private SensorStatus _status;
     private Context _context;
 
     public WebClient(Context context, String url)
@@ -29,40 +30,48 @@ public class WebClient {
         _context = context;
     }
 
-    public SensorStatus GetStatus(int id) {
+    public void CheckStatus(int id) {
         if (_url == "")
         {
-            return _status;
+            return;
+        }
+
+        ConnectivityManager conMan = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conMan.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected()) {
+            return;
         }
 
         WebServiceCall webServiceCall = new WebServiceCall();
         webServiceCall.execute(id);
-        return _status;
+        return;
     }
 
     private class WebServiceCall extends AsyncTask<Integer, Void, JSONObject>
     {
+        private int _id;
+
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             try {
-                _status = new SensorStatus();
-                _status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
+                SensorStatus status = new SensorStatus();
+                status.Id = _id;
+                status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
                 String timeStamp = jsonObject.getString("TimeStamp").replace('T', ' ');
-                _status.TimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStamp);
+                status.TimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStamp);
 
                 CheckStatus checkStatus = new CheckStatus();
-                checkStatus.hasStatusChanged(_context, _status);
+                checkStatus.hasStatusChanged(_context, status);
             } catch (JSONException ex) {
             } catch (ParseException ex){
             }
-
-
         }
 
         @Override
         protected JSONObject doInBackground(Integer... params) {
             URL url;
             HttpURLConnection conn;
+            _id = params[0];
 
             try {
                 if (!_url.endsWith("/")) {
@@ -82,7 +91,7 @@ public class WebClient {
                 conn.setRequestProperty("Accept", "application/json");
 
                 if (conn.getResponseCode() != 200) {
-                    throw new RuntimeException("Failed : HTTP error code : "
+                    throw new ProtocolException("Failed : HTTP error code : "
                             + conn.getResponseCode());
                 }
 
@@ -99,9 +108,6 @@ public class WebClient {
             } catch (JSONException ex) {
                 return null;
             } catch (IOException ex) {
-                int i = 0;
-                int j = 0;
-                j = i + 1;
                 return null;
             } finally {
                 conn.disconnect();

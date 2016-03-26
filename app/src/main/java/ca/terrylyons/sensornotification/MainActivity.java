@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -117,5 +118,24 @@ public class MainActivity extends AppCompatActivity {
                 view.setText(R.string.done);
                 break;
         }
+    }
+
+    public void onWasherReset(View view) {
+        resetSensor(0);
+    }
+
+    public void onDryerReset(View view) {
+        resetSensor(1);
+    }
+
+    private void resetSensor(int id)
+    {
+        SensorStatus status = new SensorStatus();
+        status.Id = id;
+        status.State = 0;
+        status.TimeStamp = new Date();
+
+        SensorPersistence persistence = new SensorPersistence();
+        persistence.setStatus(this, status);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -20,6 +21,7 @@ public class WifiStateChangeBroadcastReceiver extends BroadcastReceiver {
         NetworkInfo netInfo = conMan.getActiveNetworkInfo();
         if (netInfo == null || netInfo.getType() != ConnectivityManager.TYPE_WIFI)
         {
+            executeService(context, true);
             return;
         }
 
@@ -27,11 +29,23 @@ public class WifiStateChangeBroadcastReceiver extends BroadcastReceiver {
         WifiInfo connectionInfo = wifiManager.getConnectionInfo();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String ssid = settings.getString("server_url", "");
+        String ssid = settings.getString("wifissid", "");
 
-        if (connectionInfo.getSSID() == ssid) {
-            Intent service = new Intent(context, SensorService.class);
-            context.startService(service);
+        String ssid2 = connectionInfo.getSSID();
+        if (ssid2.startsWith("\""))
+        {
+            ssid2 = ssid2.substring(1);
         }
+        if (ssid2.endsWith("\"")) {
+            ssid2 = ssid2.substring(0, ssid2.length() - 1);
+        }
+        executeService(context, !ssid.equals(ssid2));
+    }
+
+    private void executeService(Context context, boolean stop)
+    {
+        Intent service = new Intent(context, SensorService.class);
+        service.putExtra("stop", stop);
+        context.startService(service);
     }
 }

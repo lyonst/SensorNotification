@@ -41,7 +41,9 @@ public class CheckStatus {
             }
         }
 
-        updateStatus(context, status);
+        if (changed || previousStatus.TimeStamp.before(status.TimeStamp)) {
+            updateStatus(context, status);
+        }
 
         if (changed)
         {
@@ -52,64 +54,14 @@ public class CheckStatus {
 
     private SensorStatus getCurrentValues(Context context, int id)
     {
-        FileInputStream file = null;
-        ObjectInputStream stream = null;
-
-        SensorStatus status = new SensorStatus();
-        status = new SensorStatus();
-        status.Id = id;
-        status.State = 0;
-        status.TimeStamp = new Date();
-
-        try {
-            file = context.getApplicationContext().openFileInput("sensor" + id + ".txt");
-
-            stream = new ObjectInputStream(file);
-            status = (SensorStatus)stream.readObject();
-
-        }
-        catch (IOException ex) {
-        } catch (ClassNotFoundException ex) {
-        }
-        finally {
-            try {
-                if (stream != null) {
-                    stream.close();
-                }
-                if (file != null) {
-                    file.close();
-                }
-            } catch (IOException ex) {
-            }
-        }
-
-        return status;
+        SensorPersistence persistence = new SensorPersistence();
+        return persistence.getStatus(context, id);
     }
 
     private void updateStatus(Context context, SensorStatus status)
     {
-        FileOutputStream file = null;
-        ObjectOutputStream stream = null;
-
-        try {
-            file = context.getApplicationContext().openFileOutput("sensor" + status.Id + ".txt", Context.MODE_PRIVATE);
-
-            stream = new ObjectOutputStream(file);
-            stream.writeObject(status);
-        }
-        catch (IOException ex) {
-        }
-        finally {
-            try {
-                if (stream != null) {
-                    stream.close();
-                }
-                if (file != null) {
-                    file.close();
-                }
-            } catch (IOException ex) {
-            }
-        }
+        SensorPersistence persistence = new SensorPersistence();
+        persistence.setStatus(context, status);
     }
 
     private void doNotification(Context context, SensorStatus status) {
@@ -117,6 +69,7 @@ public class CheckStatus {
         builder.setSmallIcon(status.Id == 0 ? R.drawable.washing_in_cold_water : R.drawable.dry_normal);
         builder.setContentTitle(context.getString(R.string.sensorNotification));
         builder.setContentText(createStatusString(context, status));
+        builder.setVibrate(new long[] {500, 500});
 
         Intent resultIntent = new Intent(context, MainActivity.class);
 

@@ -7,27 +7,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v7.app.NotificationCompat;
 import android.preference.PreferenceManager;
 
 public class SensorService extends Service {
     private Handler _handler;
 
     public SensorService() {
+        _handler = null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_info_black_24dp);
-        builder.setContentTitle("test title");
-        builder.setContentText("test text");
+        boolean stop = intent.getBooleanExtra("stop", false);
 
-        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(1, builder.build());
+        if (stop)
+        {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
 
-        _handler = new Handler();
-        _handler.post(runnableCode);
+        if (_handler == null) {
+            _handler = new Handler();
+            _handler.post(runnableCode);
+        }
         return START_STICKY;
     }
 
@@ -38,11 +40,12 @@ public class SensorService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-
         if (_handler != null) {
             _handler.removeCallbacks(runnableCode);
+            _handler = null;
         }
+
+        super.onDestroy();
     }
 
     private Runnable runnableCode = new Runnable() {
@@ -53,10 +56,12 @@ public class SensorService extends Service {
             int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
 
             WebClient client = new WebClient(getApplicationContext(), url);
-            client.GetStatus(0);
-            client.GetStatus(1);
+            client.CheckStatus(0);
+            client.CheckStatus(1);
 
-            _handler.postDelayed(runnableCode, frequency * 60000);
+            if (frequency != -1) {
+                _handler.postDelayed(runnableCode, frequency * 60000);
+            }
         }
     };
 }
