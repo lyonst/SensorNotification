@@ -1,6 +1,10 @@
 package ca.terrylyons.sensornotification;
 
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,13 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        int [] statuses = getCurrentValues();
-
         TextView washerStatus = (TextView)findViewById(R.id.washerStatus);
         TextView dryerStatus = (TextView)findViewById(R.id.dryerStatus);
 
-        setStatus(washerStatus, statuses[0]);
-        setStatus(dryerStatus, statuses[1]);
+        SensorPersistence persistence = new SensorPersistence();
+        setStatus(washerStatus, persistence.getStatus(this, 0).State);
+        setStatus(dryerStatus, persistence.getStatus(this, 1).State);
 
         Intent service = new Intent(this, SensorService.class);
         this.startService(service);
@@ -58,50 +61,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private int[] getCurrentValues()
-    {
-        FileInputStream file = null;
-        BufferedReader reader = null;
-
-        int[] statuses = new int[2];
-        statuses[0] = 0;
-        statuses[1] = 0;
-
-        try {
-            file = getApplicationContext().openFileInput("sensor.txt");
-            reader = new BufferedReader(new InputStreamReader(file));
-
-            String data = reader.readLine();
-            String[] values = data.split(",");
-
-
-            if (values.length > 3)
-            {
-                statuses[0] = Integer.parseInt(values[0]);
-                statuses[1] = Integer.parseInt(values[2]);
-            }
-        }
-        catch (IOException ex)
-        {
-        }
-        finally {
-            try
-            {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (file != null) {
-                    file.close();
-                }
-            }
-            catch(IOException ex)
-            {
-            }
-        }
-
-        return statuses;
     }
 
     private void setStatus(TextView view, int status)
@@ -137,5 +96,30 @@ public class MainActivity extends AppCompatActivity {
 
         SensorPersistence persistence = new SensorPersistence();
         persistence.setStatus(this, status);
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int id = intent.getIntExtra("id", 0);
+            int state = intent.getIntExtra("state", 0);
+
+            setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), state);
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(CheckStatus.BROADCAST_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 }

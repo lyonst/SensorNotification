@@ -1,8 +1,6 @@
 package ca.terrylyons.sensornotification;
 
-import android.app.NotificationManager;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -10,10 +8,14 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 
 public class SensorService extends Service {
-    private Handler _handler;
+    private final Handler _handler = new Handler();
 
     public SensorService() {
-        _handler = null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
     @Override
@@ -26,10 +28,8 @@ public class SensorService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (_handler == null) {
-            _handler = new Handler();
-            _handler.post(runnableCode);
-        }
+        _handler.removeCallbacks(runnableCode);
+        _handler.post(runnableCode);
         return START_STICKY;
     }
 
@@ -42,7 +42,6 @@ public class SensorService extends Service {
     public void onDestroy() {
         if (_handler != null) {
             _handler.removeCallbacks(runnableCode);
-            _handler = null;
         }
 
         super.onDestroy();

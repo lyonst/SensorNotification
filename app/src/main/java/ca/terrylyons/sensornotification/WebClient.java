@@ -54,6 +54,10 @@ public class WebClient {
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             try {
+                if (jsonObject == null) {
+                    return;
+                }
+
                 SensorStatus status = new SensorStatus();
                 status.Id = _id;
                 status.State = jsonObject.getString("Running") == "true" ? 1 : 0;

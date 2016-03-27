@@ -21,6 +21,9 @@ import java.util.Date;
  * Created by Terry2 on 24/03/2016.
  */
 public class CheckStatus {
+    private static final String TAG = "BroadcastService";
+    public static final String BROADCAST_ACTION = "ca.terrylyons.sensornotification.displayupdate";
+
     public boolean hasStatusChanged(Context context, SensorStatus status)
     {
         SensorStatus previousStatus = getCurrentValues(context, status.Id);
@@ -31,12 +34,12 @@ public class CheckStatus {
 
             if (previousStatus.State == 1)
             {
-                status.State = 3;
+                status.State = 2;
             }
         }
         else {
             if (previousStatus.State == 0 && previousStatus.TimeStamp.before(status.TimeStamp)) {
-                status.State = 3;
+                status.State = 2;
                 changed = true;
             }
         }
@@ -48,6 +51,7 @@ public class CheckStatus {
         if (changed)
         {
             doNotification(context, status);
+            doBroadcastUpdate(context, status);
         }
         return changed;
     }
@@ -87,6 +91,14 @@ public class CheckStatus {
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.notify(status.Id, builder.build());
+    }
+
+    private void doBroadcastUpdate(Context context, SensorStatus status) {
+        Intent updateIntent = new Intent(BROADCAST_ACTION);
+        updateIntent.putExtra("id", status.Id);
+        updateIntent.putExtra("state", status.State);
+
+        context.sendBroadcast(updateIntent);
     }
 
     private String createStatusString(Context context, SensorStatus status)
