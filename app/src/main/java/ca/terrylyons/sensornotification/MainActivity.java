@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(id);
+
+        setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), 0);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
