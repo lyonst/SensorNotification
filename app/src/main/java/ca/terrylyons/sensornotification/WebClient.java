@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,7 +68,9 @@ public class WebClient {
                 CheckStatus checkStatus = new CheckStatus();
                 checkStatus.hasStatusChanged(_context, status);
             } catch (JSONException ex) {
+                Log.e("WebClient.onPostExecute", "JSONException: " + ex.getMessage());
             } catch (ParseException ex){
+                Log.e("WebClient.onPostExecute", "ParseException: " + ex.getMessage());
             }
         }
 
@@ -78,6 +81,8 @@ public class WebClient {
             _id = params[0];
 
             try {
+                Log.d("WebClient.doBackground", "Sending request");
+
                 if (!_url.endsWith("/")) {
                     _url += "/";
                 }
@@ -85,8 +90,10 @@ public class WebClient {
                 url = new URL(_url + "sensors/laundry/" + params[0]);
                 conn = (HttpURLConnection) url.openConnection();
             } catch (MalformedURLException ex) {
+                Log.e("WebClient.doBackground", "MalformedURLException: " + ex.getMessage());
                 return null;
             } catch (IOException ex) {
+                Log.e("WebClient.doBackground", "IOException: " + ex.getMessage());
                 return null;
             }
 
@@ -108,10 +115,13 @@ public class WebClient {
 
                 return obj;
             } catch (ProtocolException ex) {
+                Log.e("WebClient.doBackground", "ProtocolException: " + ex.getMessage());
                 return null;
             } catch (JSONException ex) {
+                Log.e("WebClient.doBackground", "JSONException: " + ex.getMessage());
                 return null;
             } catch (IOException ex) {
+                Log.e("WebClient.doBackground", "IOException2: " + ex.getMessage());
                 return null;
             } finally {
                 conn.disconnect();

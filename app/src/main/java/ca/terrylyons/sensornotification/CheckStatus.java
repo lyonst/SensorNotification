@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -26,6 +27,7 @@ public class CheckStatus {
 
     public boolean hasStatusChanged(Context context, SensorStatus status)
     {
+        Log.d("CheckStatus.hasChanged", String.format("Checking status for %d", status.Id) );
         SensorStatus previousStatus = getCurrentValues(context, status.Id);
         boolean changed = false;
 
@@ -53,6 +55,7 @@ public class CheckStatus {
             doNotification(context, status);
             doBroadcastUpdate(context, status);
         }
+        Log.d("CheckStatus.hasChanged", String.format("Done checking status for %d", status.Id) );
         return changed;
     }
 
@@ -69,6 +72,8 @@ public class CheckStatus {
     }
 
     private void doNotification(Context context, SensorStatus status) {
+        Log.d("CheckStatus.doNotify", String.format("Doing notification for %d", status.Id) );
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(status.Id == 0 ? R.drawable.washing_in_cold_water : R.drawable.dry_normal);
         builder.setContentTitle(context.getString(R.string.sensorNotification));
@@ -91,14 +96,20 @@ public class CheckStatus {
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.notify(status.Id, builder.build());
+
+        Log.d("CheckStatus.doNotify", String.format("Done notification for %d", status.Id));
     }
 
     private void doBroadcastUpdate(Context context, SensorStatus status) {
+        Log.d("CheckStatus.broadcast", String.format("Broadcasting update for %d", status.Id) );
+
         Intent updateIntent = new Intent(BROADCAST_ACTION);
         updateIntent.putExtra("id", status.Id);
         updateIntent.putExtra("state", status.State);
 
         context.sendBroadcast(updateIntent);
+
+        Log.d("CheckStatus.broadcast", String.format("Done broadcasting update for %d", status.Id));
     }
 
     private String createStatusString(Context context, SensorStatus status)

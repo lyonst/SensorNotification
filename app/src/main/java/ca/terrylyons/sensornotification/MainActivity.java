@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setStatus(dryerStatus, persistence.getStatus(this, 1).State);
 
         Intent service = new Intent(this, SensorService.class);
+        service.putExtra("stop", false);
         this.startService(service);
     }
 

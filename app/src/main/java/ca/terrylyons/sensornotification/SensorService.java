@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SensorService extends Service {
     private final Handler _handler = new Handler();
@@ -20,10 +21,15 @@ public class SensorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean stop = intent.getBooleanExtra("stop", false);
+        boolean stop = false;
+
+        if (intent != null) {
+            intent.getBooleanExtra("stop", false);
+        }
 
         if (stop)
         {
+            Log.d("onStartCommand", "Stopping");
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -59,7 +65,7 @@ public class SensorService extends Service {
             client.CheckStatus(1);
 
             if (frequency != -1) {
-                _handler.postDelayed(runnableCode, frequency * 60000);
+                _handler.postDelayed(runnableCode, 5 * 60000);
             }
         }
     };
