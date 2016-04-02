@@ -78,7 +78,7 @@ public class CheckStatus {
         builder.setSmallIcon(status.Id == 0 ? R.drawable.washing_in_cold_water : R.drawable.dry_normal);
         builder.setContentTitle(context.getString(R.string.sensorNotification));
         builder.setContentText(createStatusString(context, status));
-        builder.setVibrate(new long[] {500, 500});
+        builder.setVibrate(new long[] {500, 250, 500});
 
         Intent resultIntent = new Intent(context, MainActivity.class);
 
@@ -95,6 +95,7 @@ public class CheckStatus {
         builder.setContentIntent(resultPendingIntent);
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(status.Id);
         notificationManager.notify(status.Id, builder.build());
 
         Log.d("CheckStatus.doNotify", String.format("Done notification for %d", status.Id));
