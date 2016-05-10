@@ -17,15 +17,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <receiver
-            android:name=".WifiStateChangeBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

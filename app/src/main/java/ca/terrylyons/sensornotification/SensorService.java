@@ -1,8 +1,11 @@
 package ca.terrylyons.sensornotification;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -60,13 +63,36 @@ public class SensorService extends Service {
             String url = settings.getString("server_url", "");
             int frequency = Integer.parseInt(settings.getString("sync_frequency", "30"));
 
-            WebClient client = new WebClient(getApplicationContext(), url);
-            client.CheckStatus(0);
-            client.CheckStatus(1);
+            if (isWiFiAvailable()) {
+                WebClient client = new WebClient(getApplicationContext(), url);
+                client.CheckStatus(0);
+                client.CheckStatus(1);
+            }
 
             if (frequency != -1) {
-                _handler.postDelayed(runnableCode, 5 * 60000);
+                _handler.postDelayed(runnableCode, frequency * 60000);
             }
         }
     };
+
+    private boolean isWiFiAvailable()
+    {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String ssid = settings.getString("wifissid", "");
+
+        String ssid2 = connectionInfo.getSSID();
+        if (ssid2.startsWith("\""))
+        {
+            ssid2 = ssid2.substring(1);
+        }
+        if (ssid2.endsWith("\"")) {
+            ssid2 = ssid2.substring(0, ssid2.length() - 1);
+        }
+
+        return ssid.equals(ssid2);
+    }
+
 }

@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setStatus(washerStatus, persistence.getStatus(this, 0).State);
         setStatus(dryerStatus, persistence.getStatus(this, 1).State);
 
+        registerReceiver(broadcastReceiver, new IntentFilter(CheckStatus.BROADCAST_ACTION));
+
         Intent service = new Intent(this, SensorService.class);
         service.putExtra("stop", false);
         this.startService(service);
@@ -113,16 +115,4 @@ public class MainActivity extends AppCompatActivity {
             setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), state);
         }
     };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(CheckStatus.BROADCAST_ACTION));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
-    }
 }

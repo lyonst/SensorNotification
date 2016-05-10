@@ -19,7 +19,6 @@ public class SensorPersistence {
         ObjectInputStream stream = null;
 
         SensorStatus status = new SensorStatus();
-        status = new SensorStatus();
         status.Id = id;
         status.State = 0;
         status.TimeStamp = new Date();
