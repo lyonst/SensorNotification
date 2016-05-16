@@ -14,14 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,4 +110,15 @@ public class MainActivity extends AppCompatActivity {
             setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), state);
         }
     };
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Intent service = new Intent(this, SensorService.class);
+        service.putExtra("stop", true);
+        this.startService(service);
+
+        service = new Intent(this, SensorService.class);
+        service.putExtra("stop", false);
+        this.startService(service);
+    }
 }

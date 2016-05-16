@@ -27,7 +27,7 @@ public class SensorService extends Service {
         boolean stop = false;
 
         if (intent != null) {
-            intent.getBooleanExtra("stop", false);
+            stop = intent.getBooleanExtra("stop", false);
         }
 
         if (stop)
@@ -75,8 +75,7 @@ public class SensorService extends Service {
         }
     };
 
-    private boolean isWiFiAvailable()
-    {
+    private boolean isWiFiAvailable() {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo connectionInfo = wifiManager.getConnectionInfo();
 
@@ -84,8 +83,7 @@ public class SensorService extends Service {
         String ssid = settings.getString("wifissid", "");
 
         String ssid2 = connectionInfo.getSSID();
-        if (ssid2.startsWith("\""))
-        {
+        if (ssid2.startsWith("\"")) {
             ssid2 = ssid2.substring(1);
         }
         if (ssid2.endsWith("\"")) {
@@ -94,5 +92,4 @@ public class SensorService extends Service {
 
         return ssid.equals(ssid2);
     }
-
 }
