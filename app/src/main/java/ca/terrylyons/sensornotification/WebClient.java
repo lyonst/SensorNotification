@@ -5,18 +5,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.Socket;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.json.*;
+import org.threeten.bp.Instant;
 
 /**
  * Created by Terry2 on 21/03/2016.
@@ -37,9 +44,7 @@ public class WebClient {
             return;
         }
 
-        ConnectivityManager conMan = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = conMan.getActiveNetworkInfo();
-        if (netInfo == null || !netInfo.isConnected()) {
+        if (!checkConnectivity()) {
             return;
         }
 
@@ -48,12 +53,42 @@ public class WebClient {
         return;
     }
 
+    public void SetTime()
+    {
+        if (_url == "")
+        {
+            return;
+        }
+
+        if (!checkConnectivity()) {
+            return;
+        }
+
+        WebServiceCall webServiceCall = new WebServiceCall();
+        webServiceCall.execute(-1);
+        return;
+    }
+
+    private boolean checkConnectivity() {
+        ConnectivityManager conMan = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conMan.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected()) {
+            return false;
+        }
+
+        return true;
+    }
+
     private class WebServiceCall extends AsyncTask<Integer, Void, JSONObject>
     {
         private int _id;
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            if (_id == -1) {
+                return;
+            }
+
             try {
                 if (jsonObject == null) {
                     return;
@@ -61,8 +96,8 @@ public class WebClient {
 
                 SensorStatus status = new SensorStatus();
                 status.Id = _id;
-                status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
-                String timeStamp = jsonObject.getString("TimeStamp").replace('T', ' ');
+                status.State = jsonObject.getJSONObject("Status").getString("Running") == "true" ? 1 : 0;
+                String timeStamp = jsonObject.getJSONObject("Status").getString("TimeStamp").replace('T', ' ');
                 status.TimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStamp);
 
                 CheckStatus checkStatus = new CheckStatus();
@@ -77,18 +112,29 @@ public class WebClient {
         @Override
         protected JSONObject doInBackground(Integer... params) {
             URL url;
-            HttpURLConnection conn;
+            Socket conn;
             _id = params[0];
 
             try {
                 Log.d("WebClient.doBackground", "Sending request");
 
-                if (!_url.endsWith("/")) {
-                    _url += "/";
-                }
+                conn = new Socket(_url, 9000);
+                conn.setSoTimeout(5000);
 
-                url = new URL(_url + "sensors/laundry/" + params[0]);
-                conn = (HttpURLConnection) url.openConnection();
+                StringBuilder sb = new StringBuilder();
+                if (_id != -1) {
+                    sb.append("GET /sensors/laundry/");
+                    sb.append(params[0]);
+                }
+                else {
+                    sb.append("POST /sensors/settime/");
+                    sb.append(Instant.now());
+                }
+                sb.append(" HTTP/1.1");
+                sb.append("\r\n");
+
+                DataOutputStream outToServer = new DataOutputStream(conn.getOutputStream());
+                outToServer.writeBytes(sb.toString());
             } catch (MalformedURLException ex) {
                 Log.e("WebClient.doBackground", "MalformedURLException: " + ex.getMessage());
                 return null;
@@ -98,21 +144,39 @@ public class WebClient {
             }
 
             try {
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() != 200) {
-                    throw new ProtocolException("Failed : HTTP error code : "
-                            + conn.getResponseCode());
+                if (_id == -1) {
+                    conn.close();
+                    return null;
                 }
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         (conn.getInputStream())));
 
-                String response = br.readLine();
+                char[] buffer = new char[2048];
+                String response = "";
+                int bytesRead;
 
-                JSONObject obj = new JSONObject(response);
+                try {
+                    while (true) {
+                        bytesRead = br.read(buffer);
 
+                        for (int i = 0; i < bytesRead; i++) {
+                            response += new Character(buffer[i]);
+                        }
+                    }
+                } catch (IOException ex)
+                {}
+
+                if (!response.contains("200 OK") || !response.contains("{\"Status"))
+                {
+                    return null;
+                }
+
+                String subStr = response.substring(response.indexOf("{\"Status"));
+
+                JSONObject obj = new JSONObject(subStr);
+
+                conn.close();
                 return obj;
             } catch (ProtocolException ex) {
                 Log.e("WebClient.doBackground", "ProtocolException: " + ex.getMessage());
@@ -124,7 +188,7 @@ public class WebClient {
                 Log.e("WebClient.doBackground", "IOException2: " + ex.getMessage());
                 return null;
             } finally {
-                conn.disconnect();
+
             }
         }
     }

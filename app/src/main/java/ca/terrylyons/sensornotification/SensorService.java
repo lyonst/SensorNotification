@@ -65,6 +65,7 @@ public class SensorService extends Service {
 
             if (isWiFiAvailable()) {
                 WebClient client = new WebClient(getApplicationContext(), url);
+                client.SetTime();
                 client.CheckStatus(0);
                 client.CheckStatus(1);
             }

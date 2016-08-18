@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="334d738d86e632e05d44f1780e82f4cd0a143495">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b7d066d0d52967ff77aedf45d70587d451f47217\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AppData\Local\Android\sdk3\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.1_819db9145c73e45c89f321416aa95d3a02a0085c\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="8de4e619c32780dde380b00dbcf68116f930c810">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_cf134a3e548d8d1658be4ad969e4a52376b9051f\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_14732b4577c1c6c6bd4fd1778f884d1735fd01c7\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_c79cef07ba7c538529039dca61091e41af87a4c2\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_d6d1ba940192008af874f9584fc5b7922eb75abd\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_87ceeebef7e939d9ee5bee38a5d898d53b994ff1\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_cca5139b067440ad6c6a413f0ba2415bce4894f2\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.1_676b20da6c877a43cfffb47d2d85453b064a43ea\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_137a11d55507911c8b030c824e2f60781338f75d\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\exploded-aar\com.jakewharton.threetenabp\threetenabp\1.0.3\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="401094efbd87997a34a95aaca1e31e476b3ce00c">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.jakewharton.threetenabp-threetenabp-1.0.3_14d4a9470d6808e36766d1c788412a961b7f5606\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\terry2\.gradle\caches\modules-2\files-2.1\org.threeten\threetenbp\1.3.1\fecd59cfa6acebf3d0f2f41f55a1cc3e24e59726\threetenbp-1.3.1-no-tzdb.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="fecd59cfa6acebf3d0f2f41f55a1cc3e24e59726">
+        <dex dex="C:\Users\terry2\AndroidStudioProjects\SensorNotification\app\build\intermediates\transforms\dex\debug\folders\1000\10\threetenbp-1.3.1-no-tzdb_bc2e23c2f4bf284ec0f17e78425099d6d32b9ae2\classes.dex" />
+    </item>
+
+</items>
