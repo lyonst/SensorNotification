@@ -61,8 +61,8 @@ public class WebClient {
 
                 SensorStatus status = new SensorStatus();
                 status.Id = _id;
-                status.State = jsonObject.getString("Running") == "true" ? 1 : 0;
-                String timeStamp = jsonObject.getString("TimeStamp").replace('T', ' ');
+                status.State = jsonObject.getJSONObject("Status").getString("Running").equals("true") ? true : false;
+                String timeStamp = jsonObject.getJSONObject("Status").getString("TimeStamp").replace('T', ' ');
                 status.TimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStamp);
 
                 CheckStatus checkStatus = new CheckStatus();
@@ -122,6 +122,9 @@ public class WebClient {
                 return null;
             } catch (IOException ex) {
                 Log.e("WebClient.doBackground", "IOException2: " + ex.getMessage());
+                return null;
+            } catch (Exception ex) {
+                Log.e("WebClient.doBackground", "Exception: " + ex.getMessage());
                 return null;
             } finally {
                 conn.disconnect();

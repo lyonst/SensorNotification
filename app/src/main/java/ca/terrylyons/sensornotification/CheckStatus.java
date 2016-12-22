@@ -31,30 +31,12 @@ public class CheckStatus {
         SensorStatus previousStatus = getCurrentValues(context, status.Id);
         boolean changed = false;
 
-        if (previousStatus.State != status.State) {
-            changed = true;
-
-            if (previousStatus.State == 1)
-            {
-                status.State = 2;
-            }
-        }
-        else {
-            if (previousStatus.State == 0 && previousStatus.TimeStamp.before(status.TimeStamp)) {
-                status.State = 2;
-                changed = true;
-            }
-        }
-
-        if (changed || previousStatus.TimeStamp.before(status.TimeStamp)) {
+        if (previousStatus.State != status.State || previousStatus.TimeStamp.before(status.TimeStamp)) {
             updateStatus(context, status);
-        }
-
-        if (changed)
-        {
             doNotification(context, status);
             doBroadcastUpdate(context, status);
         }
+
         Log.d("CheckStatus.hasChanged", String.format("Done checking status for %d", status.Id) );
         return changed;
     }
@@ -116,19 +98,7 @@ public class CheckStatus {
     {
         String statusString = context.getString(status.Id == 0 ? R.string.washer : R.string.dryer);
         statusString += " ";
-
-        switch (status.State)
-        {
-            case 0:
-                statusString += context.getString(R.string.notRunning);
-                break;
-            case 1:
-                statusString += context.getString(R.string.running);
-                break;
-            case 2:
-                statusString += context.getString(R.string.done);
-                break;
-        }
+        statusString += status.State ? "Running" : "Done";
 
         return statusString;
     }

@@ -20,7 +20,7 @@ public class SensorPersistence {
 
         SensorStatus status = new SensorStatus();
         status.Id = id;
-        status.State = 0;
+        status.State = false;
         status.TimeStamp = new Date();
 
         try {

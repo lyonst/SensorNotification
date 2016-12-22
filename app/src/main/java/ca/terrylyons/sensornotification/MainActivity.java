@@ -61,20 +61,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return super.onOptionsItemSelected(item);
     }
 
-    private void setStatus(TextView view, int status)
+    private void setStatus(TextView view, boolean status)
     {
-        switch (status)
-        {
-            case 0:
-                view.setText(R.string.notRunning);
-                break;
-            case 1:
-                view.setText(R.string.running);
-                break;
-            case 2:
-                view.setText(R.string.done);
-                break;
-        }
+        view.setText(status ? "Running" : "NotRunning");
     }
 
     public void onWasherReset(View view) {
@@ -89,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     {
         SensorStatus status = new SensorStatus();
         status.Id = id;
-        status.State = 0;
+        status.State = false;
         status.TimeStamp = new Date();
 
         SensorPersistence persistence = new SensorPersistence();
@@ -98,14 +87,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(id);
 
-        setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), 0);
+        setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), false);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int id = intent.getIntExtra("id", 0);
-            int state = intent.getIntExtra("state", 0);
+            boolean state = intent.getBooleanExtra("state", false);
 
             setStatus((TextView)findViewById(id == 0 ? R.id.washerStatus : R.id.dryerStatus), state);
         }

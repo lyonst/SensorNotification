@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class SensorStatus implements Serializable {
     public int Id;
-    public int State;
+    public boolean State;
     public Date TimeStamp;
 
     public SensorStatus()
